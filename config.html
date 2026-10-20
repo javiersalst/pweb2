@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Smart Room-Configuración</title>
+    <link rel="stylesheet" href="./css/iroom.css">
+  </head>
+  <body>
+    <h1>Smart Room Project</h1>
+    <div class="barra-menu">
+        <nav>
+            <ul>
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="config.html">Configuración</a></li>
+            <li><a href="minombre.html">Nombre</a></li>
+            </ul>
+        </nav>
+        <span id="info-usuario">
+        </span>
+    </div>
+    <main>
+        <form action="datos.js" method="post" class="form-configuration">
+            <section class="columna-datos">
+                <h2> Datos de la habitación</h2>
+                <p>
+                <label for="pais">Pais:</label>
+                <input type="text" id="pais" name="pais" list="lista-paises" class="caja-texto" placeholder="Seleccione o escriba un pais" required>
+                <datalist id="lista-paises">
+                    <option value="España"></option>
+                    <option value="Francia"></option>
+                    <option value="Italia"></option>
+                    <option value="Alemania"></option>
+                    <option value="Reino Unido"></option>
+                </datalist>
+                </p>
+                <p>
+                <label for="ciudad">Ciudad:</label>
+                <input type="text" id="ciudad" name="ciudad" class="caja-texto" placeholder="Alcalá de Henares" required>
+                </p>
+                <p>
+                <label for="gps">Coordenadas GPS:</label>
+                <input type="text" id="gps" name="gps" class="caja-texto" placeholder="40.5126, -3.3486" required>
+                </p>
+                <p>
+                <label for="mapa-url">Mapa-URL:</label>
+                <input type="url" id="mapa-url" name="mapa-url" class="caja-texto" placeholder="https://maps.google.com" required>
+                </p>
+                <p>
+                <label for="foto">Foto:</label>
+                <input type="file" id="foto" name="foto" class="caja-texto" accept="image/*">
+                </p>
+                <p>
+                <label for="password">Contraseña:</label>
+                <input type="password" id="password" name="password" class="caja-texto" required>
+                </p>
+                <p>
+                    <button type="submit">Enviar datos</button>
+                </p>
+            </section>
+            <section class="columna-sensores">
+                <h2>Seleccione los sensores</h2>
+                <div class="grupo-sensores">
+                    <h3>Sensores disponibles:</h3>
+                    <label>
+                        <input type="checkbox" name="sensores" value="temperatura"> Temperatura
+                    </label><br>
+                    <label>
+                        <input type="checkbox" name="sensores" value="humedad"> Humedad
+                    </label><br>
+                    <label>
+                        <input type="checkbox" name="sensores" value="sonido">Nivel de Sonido
+                    </label><br>
+                    <label>
+                        <input type="checkbox" name="sensores" value="luz">Nivel de luz
+                    </label><br>
+                    <label>
+                        <input type="checkbox" name="sensores" value="movimiento">Movimiento
+                    </label>
+                </div>
+              <div class="alerta-sensores">
+                <h3>Configure alertas</h3>
+                <p>
+                <label for="temp-max">Temperatura máxima(ºC):</label>
+                <input type="number" id="temp-max" name="temp-max" class="caja-texto" min="-20" max="45" step="0.5" value="30">
+                </p>
+                <p>
+                <label for="temp-min">Temperatura mínima(ºC):</label>
+                <input type="number" id="temp-min" name="temp-min" class="caja-texto" min="-20" max="45" step="0.5" value="15">
+                </p>
+                <p>
+                <label for="diferencia-temp">Diferencia de temperatura:</label>
+                <output id="diferencia-temp" for="temp-max temp-min">15.0ºC</output>
+                </p>
+              </div>  
+            </section>
+        </form>
+        <p class="enlace-volver">
+            <a href="index.html">Volver a la página principal</a>
+        </p>
+    </main>
+    <footer>
+        <p><strong>Universidad de Alcalá</strong></p>
+    </footer>
+    <script>
+       const inputMax=document.getElementById("temp-max");
+       const inputMin=document.getElementById("temp-min");
+       const outputDiferencia=document.getElementById("diferencia-temp");
+        function validar(){
+            const min=parseFloat(inputMin.value);
+            const max=parseFloat(inputMax.value);
+            if(min< -20 || min> 45 || max< -20 || max>45){
+                outputDiferencia.value="Los valores deben de estar entre -20 y 45 ºC";
+                return;
+            }
+            if(min>max){
+                outputDiferencia.value="La temperatura mínima no puede ser mayor que la máxima";
+                return;
+            }
+            outputDiferencia.value=(max-min)+"ºC";
+        }
+        inputMax.oninput=validar;
+        inputMin.oninput=validar;
+    </script>
+    <script src="./usuario.js"></script>
+  </body>
+</html>
+

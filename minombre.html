@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Smart Room - Cambiar Nombre</title>
+    <link rel="stylesheet" href="./css/iroom.css">
+  </head>
+  <body>
+    <h1>Smart Room Project</h1>
+    <div class="barra-menu">
+        <nav>
+            <ul>
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="config.html">Configuración</a></li>
+            <li><a href="minombre.html">Nombre</a></li>
+            </ul>
+        </nav>
+    </div>
+    <main>
+        <section class="nombre">
+            <h2>Identificación de usuario</h2>
+            <form id="form-nombre">
+                <p>
+                    <label for="nombre">Introduzca su nombre:</label>
+                    <input type="text" id="nombre-input"  placeholder="Ingrese su nombre" required>
+                </p>
+                <p>
+                    <button type="submit">Guardar nombre</button>
+                </p>
+            </form>
+        </section>
+        <p class="enlace-volver">
+            <a href="index.html">Volver a la página principal</a>
+        </p>
+    </main>
+    <footer>
+        <p><strong>Universidad de Alcalá</strong></p>
+    </footer>
+    <script>
+      const formNombre = document.getElementById('form-nombre');
+      const inputNombre=document.getElementById('nombre-input');
+      const nombreActual=localStorage.getItem('fname');  
+      if(nombreActual){
+        inputNombre.value=nombreActual;
+      }
+      formNombre.onsubmit=function(event){
+        event.preventDefault();
+        const nuevoNombre=inputNombre.value;
+        if(nuevoNombre){
+            localStorage.setItem('fname',nuevoNombre);
+            alert('Nombre guardado correctamente');
+            window.location.href='index.html';
+        }
+      };
+    </script>
+    <script src="./usuario.js"></script>
+  </body>
+</html>

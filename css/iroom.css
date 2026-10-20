@@ -1,0 +1,152 @@
+/* Estilos Generales */
+body {
+    font-family: Arial, sans-serif;
+    margin: 20 px;
+    background-color: #f0f0f0;
+    color:#333333;
+}
+header , h1 {
+    color: #003366;
+    background-color: #f0f0f0;
+    padding: 10px;
+    text-align:center;
+}
+h2 , h3{
+    color:#333333;
+    background-color: #6495ed;
+    border-radius: 5px;
+    padding: 12px 15px;
+}
+.barra-menu{
+    background-color: #003366;
+    border-radius: 5px;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+nav ul{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+}
+nav li{
+    display:  flex;
+    margin-right: 15px;
+    padding: 5px 10px;
+}
+nav a{
+    color: #ffffff;
+    text-decoration: none;
+}
+#info-usuario{
+    float: right;
+    font-weight: bold;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+}
+main{
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: flex-start;
+}
+section{
+    background-color: #ffffff;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 20px;
+    flex: 1;
+}
+footer{
+    text-align: center;
+    padding: 10px;
+    margin-top: 40px;
+    background-color: #333333;
+    color: #ffffff;
+}
+.carrusel-css{
+    width: 100%;
+    max-width: 450px;
+    height: 280px;
+    overflow: hidden;
+    border-radius: 5px;
+    margin-top: 10px;
+    position:relative;
+}
+.carrusel-slide{
+    position: relative;
+    width: 300%;
+    height: 100%;
+    animation: cambiarFoto 12s infinite;
+}
+.carrusel-slide img{
+    position: static;
+    width: 33.33%;
+    height: 100%;
+    object-fit: cover;
+}
+@keyframes cambiarFoto{
+    0%,28% {transform: translateX(0);}
+    33%,61% {transform: translateX(-33.33%);}
+    66%,94% {transform: translateX(-66.66%);}
+    100% {transform: translateX(0);}
+
+}
+.form-configuration{
+    display: flex;
+    flex:1;
+    width: 100%;
+    gap: 20px;
+}
+.enlace-volver{
+    margin-top: 15px;
+    width: 100%;
+}
+#nombre-input{
+    margin-top: 20px;
+    border-radius: 5px;
+    width: 250px;
+    padding: 8px;
+    font-size: 15px;
+}
+button{
+    border-radius: 5px;
+    width: 150px;
+    font-size: 15px;
+    padding: 5px;
+}
+.caja-texto{
+    width: 250px;
+    padding: 5px;
+    font-size: 15px;
+    border-radius: 5px;
+}
+.grupo-sensores label{
+    margin-bottom: 8px;
+    display: inline-block;
+}
+@media(max-width: 768px){
+    .barra-menu {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+    nav ul {
+        justify-content: center;
+    }
+    main {
+        flex-direction: column;
+    }
+    section {
+        width: 100%;
+        box-sizing: border-box;
+    }
+    .caja-input {
+        width: 100%;
+        box-sizing: border-box;
+    }
+}
