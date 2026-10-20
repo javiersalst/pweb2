@@ -10,32 +10,31 @@ var modal=document.getElementById("modal");
 var modalTexto=document.getElementById("modal-texto");
 var modalAceptar=document.getElementById("modal-aceptar");
 
-var enviarOk=false;
+var advertenciaTemp=false;
 
-function mostrarModal(titulo,mensajes){
-  modal.querySelector("h3").textContent=titulo;
+function mostrarModal(mensajes){
   modalTexto.innerHTML="";
-
-  var ul=document.createElement("ul");
   for(var i=0;i<mensajes.length;i++){
-    var li=document.createElement("li");
-    li.textContent=mensajes[i];
-    ul.appendChild(li);
+    var p=document.createElement("p");
+    p.textContent=mensajes[i];
+    modalTexto.appendChild(p);
   }
-  modalTexto.appendChild(ul);
   modal.style.display="block";
 }
 
 modalAceptar.onclick=function(){
   modal.style.display="none";
-  if(enviarOk){
-    enviarOk=false;
+  if(advertenciaTemp){
+    advertenciaTemp=false;
     formConfig.submit();
   }
 };
 
 function validarPais(valor){
   var p=valor.trim().toLowerCase();
+  if(p===""){
+    return false;
+  }
   for(var i=0;i<paises.length;i++){
     if(paises[i]===p){
       return true;
@@ -44,16 +43,19 @@ function validarPais(valor){
   return false;
 }
 
+// Indicador obligatorio: evaluacion de longitud (no seguridad)
 password.oninput=function(){
-  var total=password.value.length;
-  if(total===0){
+  var len=password.value.length;
+  if(len===0){
     indicadorPassword.textContent="";
-  }else if(total<9){
-    indicadorPassword.textContent="Corta";
-  }else if(total<=11){
-    indicadorPassword.textContent="Media";
+  }else if(len<9){
+    indicadorPassword.textContent="Evaluación de longitud: Demasiado corta (mínimo 9)";
+  }else if(len<=11){
+    indicadorPassword.textContent="Evaluación de longitud: Corta";
+  }else if(len<=15){
+    indicadorPassword.textContent="Evaluación de longitud: Media";
   }else{
-    indicadorPassword.textContent="Larga";
+    indicadorPassword.textContent="Evaluación de longitud: Larga";
   }
 };
 
@@ -63,36 +65,41 @@ formConfig.onsubmit=function(e){
   var errores=[];
   var avisos=[];
 
-  // comprobar pais
+  // 1. Validacion de pais
   if(!validarPais(pais.value)){
-    errores.push("El país no es válido.");
+    errores.push("Pais Erroneo");
   }
 
-  // comprobar temperatura
-  var textoTemp=tempActual.value.trim().replace(",",".");
-  if(textoTemp===""){
-    errores.push("Falta la temperatura actual.");
+  // 2. Validacion de temperatura actual (intervalo inclusivo 22 a 26)
+  var tempCadena=tempActual.value.trim().replace(",",".");
+  if(tempCadena===""){
+    errores.push("Falta introducir la temperatura actual.");
   }else{
-    var numTemp=Number(textoTemp);
+    var numTemp=Number(tempCadena);
     if(isNaN(numTemp)){
-      errores.push("La temperatura debe ser un número.");
+      errores.push("Formato de temperatura incorrecto.");
     }else if(numTemp<22||numTemp>26){
-      avisos.push("Temperatura fuera de rango (22-26): "+numTemp);
+      avisos.push("Advertencia: la temperatura ("+numTemp+" ºC) está fuera del intervalo 22-26 ºC.");
     }
   }
 
-  // comprobar contrasena
+  // 3. Validacion de contrasena
   if(password.value.length<9){
     errores.push("La contraseña debe tener al menos 9 caracteres.");
   }
 
-  // comprobaciones
+  // Si hay errores obligatorios, impiden completar la operacion
   if(errores.length>0){
-    mostrarModal("Errores",errores.concat(avisos));
-  }else if(avisos.length>0){
-    enviarOk=true;
-    mostrarModal("Aviso",avisos);
-  }else{
-    formConfig.submit();
+    mostrarModal(errores);
+    return;
   }
+
+  // Si solo hay advertencia de temperatura, no impide registrar la lectura
+  if(avisos.length>0){
+    advertenciaTemp=true;
+    mostrarModal(avisos);
+    return;
+  }
+
+  formConfig.submit();
 };
