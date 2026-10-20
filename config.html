@@ -60,32 +60,38 @@
             </section>
             <form id="form-config" action="datos.js" method="post" class="form-configuration" novalidate>
 
-  <!-- pais -->
-  <input type="text" id="pais" name="pais" list="lista-paises" class="caja-texto" placeholder="Seleccione o escriba un pais">
+  <!-- Pais -->
+  <p>
+    <label for="pais">País:</label>
+    <input type="text" id="pais" name="pais" list="lista-paises" class="caja-texto" placeholder="Seleccione o escriba un pais">
+  </p>
 
-  <!-- temperatura -->
+  <!-- Temperatura actual (22 - 26 C) -->
   <p>
     <label for="temp-actual">Temperatura actual (ºC):</label>
     <input type="text" id="temp-actual" name="temp-actual" class="caja-texto" placeholder="24">
   </p>
 
-  <!-- contrasena -->
+  <!-- Contrasena -->
   <p>
-    <label for="password">Contraseña:</label>
+    <label for="password">Password:</label>
     <input type="password" id="password" name="password" class="caja-texto">
     <span id="indicador-password"></span>
   </p>
 
-<!-- modal al final -->
+  <p>
+    <button type="submit" id="btn-enviar">Enviar datos</button>
+  </p>
+</form>
+
+<!-- Ventana modal (sustituye a alert, Figura 1) -->
 <div id="modal">
   <div>
-    <h3>Error</h3>
     <div id="modal-texto"></div>
-    <div>
-      <button type="button" id="modal-aceptar">Aceptar</button>
-    </div>
+    <button type="button" id="modal-aceptar">Aceptar</button>
   </div>
 </div>
+
             <section class="columna-sensores">
                 <h2>Seleccione los sensores</h2>
                 <div class="grupo-sensores">
