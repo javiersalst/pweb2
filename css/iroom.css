@@ -175,9 +175,6 @@ button{
     font-weight: bold;
 }
 
-#modal-aceptar:hover {
-    background-color: #1a252f;
-}
 @media(max-width: 768px){
     .barra-menu {
         flex-direction: column;
