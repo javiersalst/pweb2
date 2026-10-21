@@ -22,7 +22,7 @@
         </span>
     </div>
     <main>
-        <form id ="form-config" action="datos.js" method="post" class="form-configuration">
+        <form id ="form-config" action="datos.js" method="post" class="form-configuration" novalidate>
             <section class="columna-datos">
                 <h2> Datos de la habitación</h2>
                 <p>
@@ -42,11 +42,17 @@
                 </p>
                 <p>
                 <label for="gps">Coordenadas GPS:</label>
-                <input type="text" id="gps" name="gps" class="caja-texto" placeholder="40.5126, -3.3486" >
+                <input type="text" id="gps" name="gps" class="caja-texto" placeholder="40.5126, -3.3486 o N 40° 30' 45.00&quot;, O 3° 20' 54.00&quot;" required>
                 </p>
                 <p>
                 <label for="mapa-url">Mapa-URL:</label>
-                <input type="url" id="mapa-url" name="mapa-url" class="caja-texto" placeholder="https://maps.google.com" >
+                <input type="url" id="mapa-url" name="mapa-url" class="caja-texto" placeholder="https://maps.google.com" required>
+                <br>
+                <a id="enlace-maps" href="https://maps.google.com" target="_blank" style="display:none; margin-top:5px;">Ir a Google Maps con estas coordenadas</a>
+                </p>
+                <p>
+                <label for="temp-actual">Temperatura actual (ºC):</label>
+                <input type="text" id="temp-actual" name="temp-actual" class="caja-texto" placeholder="Ej: 24" required>
                 </p>
                 <p>
                 <label for="foto">Foto:</label>
@@ -54,18 +60,16 @@
                 </p>
                 <p>
                 <label for="password">Contraseña:</label>
-                <input type="password" id="password" name="password" class="caja-texto" >
+                <input type="password" id="password" name="password" class="caja-texto" required>
                 <span id="indicador-password"></span>
                 </p>
                 <p>
                     <button type="submit" id="btn-enviar">Enviar datos</button>
                 </p>
-                <div id="modal">
+                <div id="modal" style="display:none;">
                     <div>
-                        <div id="modal-texto">
-                            <p>Pais Erroneo</p>
-                            <button type="button" id="modal-aceptar"></button>
-                        </div>
+                        <div id="modal-texto"></div>
+                        <button type="button" id="modal-aceptar">Aceptar</button>
                     </div>
                 </div>
             </section>
