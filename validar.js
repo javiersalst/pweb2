@@ -27,8 +27,8 @@ document.addEventListener("DOMContentLoaded", function() {
             if (valorPais === "" || !paisesValidos.includes(valorPais)) {
                 event.preventDefault(); // Detiene el envío
                 event.stopPropagation();
-                mostrarModal("Pais Erroneo"); // Muestra tu modal
+                mostrarModal("Pais Erroneo"); // Muestra el modal
             }
-        }, true); // Captura el evento antes de las validaciones nativas del navegador
+        }, true); 
     }
 });
