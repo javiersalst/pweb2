@@ -5,31 +5,34 @@ document.addEventListener("DOMContentLoaded", function() {
     // Lista de países válidos en minúsculas
     const paisesValidos = ["españa", "francia", "alemania", "italia", "reino unido"];
 
-    // Función para mostrar la ventana modal existente en el HTML
+    // Función para mostrar la ventana modal
     function mostrarModal(mensaje) {
         const modal = document.getElementById("modal");
         const modalTexto = document.getElementById("modal-texto");
         
-        // Actualizamos el contenido del modal con el mensaje y el botón de aceptar
-        modalTexto.innerHTML = `<p>${mensaje}</p><button type="button" id="modal-aceptar">Aceptar</button>`;
-        modal.style.display = "block";
+        if (modal && modalTexto) {
+            modalTexto.innerHTML = `<p>${mensaje}</p><button type="button" id="modal-aceptar">Aceptar</button>`;
+            modal.style.display = "block";
 
-        // Evento para cerrar la ventana modal al pulsar Aceptar
-        document.getElementById("modal-aceptar").onclick = function() {
-            modal.style.display = "none";
-        };
+            // Evento para cerrar la ventana modal al pulsar Aceptar
+            document.getElementById("modal-aceptar").onclick = function() {
+                modal.style.display = "none";
+            };
+        } else {
+            // Por si acaso el modal no se encuentra, usamos alert temporalmente para probar
+            alert(mensaje);
+        }
     }
 
     // Validación al enviar el formulario
     if (formConfig) {
         formConfig.addEventListener("submit", function(event) {
-            // 1. Quitamos espacios iniciales/finales y pasamos todo a minúsculas
             const valorPais = inputPais.value.trim().toLowerCase();
             
-            // 2. Comprobamos si está vacío o si no se encuentra en la lista
+            // Si el país no está en la lista o está vacío
             if (valorPais === "" || !paisesValidos.includes(valorPais)) {
-                event.preventDefault(); // Evita que se envíe el formulario
-                mostrarModal("Pais Erroneo"); // Muestra el mensaje en la ventana modal
+                event.preventDefault(); // Evita que se envíe
+                mostrarModal("Pais Erroneo"); // Muestra el mensaje
             }
         });
     }
