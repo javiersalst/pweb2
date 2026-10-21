@@ -1,105 +1,81 @@
-var paises=["españa","francia","italia","alemania","reino unido"];
+// Esperamos a que cargue todo el documento
+document.addEventListener("DOMContentLoaded", function() {
+    
+    // Elementos del DOM
+    const formConfig = document.getElementById("form-config");
+    const inputPais = document.getElementById("pais");
+    const inputMax = document.getElementById("temp-max");
+    const inputMin = document.getElementById("temp-min");
+    const outputDiferencia = document.getElementById("diferencia-temp");
+    
+    // Lista de países válidos en minúsculas (según la lista facilitada)
+    const paisesValidos = ["españa", "francia", "alemania", "italia", "reino unido"];
 
-var formConfig=document.getElementById("form-config");
-var pais=document.getElementById("pais");
-var tempActual=document.getElementById("temp-actual");
-var password=document.getElementById("password");
-var indicadorPassword=document.getElementById("indicador-password");
-
-var modal=document.getElementById("modal");
-var modalTexto=document.getElementById("modal-texto");
-var modalAceptar=document.getElementById("modal-aceptar");
-
-var advertenciaTemp=false;
-
-function mostrarModal(mensajes){
-  modalTexto.innerHTML="";
-  for(var i=0;i<mensajes.length;i++){
-    var p=document.createElement("p");
-    p.textContent=mensajes[i];
-    modalTexto.appendChild(p);
-  }
-  modal.style.display="block";
-}
-
-modalAceptar.onclick=function(){
-  modal.style.display="none";
-  if(advertenciaTemp){
-    advertenciaTemp=false;
-    formConfig.submit();
-  }
-};
-
-function validarPais(valor){
-  var p=valor.trim().toLowerCase();
-  if(p===""){
-    return false;
-  }
-  for(var i=0;i<paises.length;i++){
-    if(paises[i]===p){
-      return true;
+    // 1. Validación en tiempo real para las temperaturas (como ya tenías)
+    function validarTemperaturas() {
+        const min = parseFloat(inputMin.value);
+        const max = parseFloat(inputMax.value);
+        
+        if (isNaN(min) || isNaN(max) || min < -20 || min > 45 || max < -20 || max > 45) {
+            outputDiferencia.value = "Los valores deben de estar entre -20 y 45 ºC";
+            return false;
+        }
+        if (min > max) {
+            outputDiferencia.value = "La temperatura mínima no puede ser mayor que la máxima";
+            return false;
+        }
+        outputDiferencia.value = (max - min) + "ºC";
+        return true;
     }
-  }
-  return false;
-}
 
-// Indicador obligatorio: evaluacion de longitud (no seguridad)
-password.oninput=function(){
-  var len=password.value.length;
-  if(len===0){
-    indicadorPassword.textContent="";
-  }else if(len<9){
-    indicadorPassword.textContent="Evaluación de longitud: Demasiado corta (mínimo 9)";
-  }else if(len<=11){
-    indicadorPassword.textContent="Evaluación de longitud: Corta";
-  }else if(len<=15){
-    indicadorPassword.textContent="Evaluación de longitud: Media";
-  }else{
-    indicadorPassword.textContent="Evaluación de longitud: Larga";
-  }
-};
-
-formConfig.onsubmit=function(e){
-  e.preventDefault();
-
-  var errores=[];
-  var avisos=[];
-
-  // 1. Validacion de pais
-  if(!validarPais(pais.value)){
-    errores.push("Pais Erroneo");
-  }
-
-  // 2. Validacion de temperatura actual (intervalo inclusivo 22 a 26)
-  var tempCadena=tempActual.value.trim().replace(",",".");
-  if(tempCadena===""){
-    errores.push("Falta introducir la temperatura actual.");
-  }else{
-    var numTemp=Number(tempCadena);
-    if(isNaN(numTemp)){
-      errores.push("Formato de temperatura incorrecto.");
-    }else if(numTemp<22||numTemp>26){
-      avisos.push("Advertencia: la temperatura ("+numTemp+" ºC) está fuera del intervalo 22-26 ºC.");
+    if (inputMax && inputMin) {
+        inputMax.oninput = validarTemperaturas;
+        inputMin.oninput = validarTemperaturas;
     }
-  }
 
-  // 3. Validacion de contrasena
-  if(password.value.length<9){
-    errores.push("La contraseña debe tener al menos 9 caracteres.");
-  }
+    // 2. Función para mostrar la ventana modal personalizada
+    function mostrarModal(mensaje) {
+        let modal = document.getElementById("modal");
+        
+        // Si no existe el modal en el HTML, lo creamos dinámicamente por seguridad
+        if (!modal) {
+            modal = document.createElement("div");
+            modal.id = "modal";
+            modal.innerHTML = `<div><div id="modal-texto"><button type="button" id="modal-aceptar">Aceptar</button></div></div>`;
+            document.body.appendChild(modal);
+        }
 
-  // Si hay errores obligatorios, impiden completar la operacion
-  if(errores.length>0){
-    mostrarModal(errores);
-    return;
-  }
+        const modalTexto = document.getElementById("modal-texto");
+        modalTexto.innerHTML = `<p>${mensaje}</p><button type="button" id="modal-aceptar">Aceptar</button>`;
+        modal.style.display = "block";
 
-  // Si solo hay advertencia de temperatura, no impide registrar la lectura
-  if(avisos.length>0){
-    advertenciaTemp=true;
-    mostrarModal(avisos);
-    return;
-  }
+        // Evento para cerrar la ventana modal al pulsar Aceptar
+        document.getElementById("modal-aceptar").onclick = function() {
+            modal.style.display = "none";
+        };
+    }
 
-  formConfig.submit();
-};
+    // 3. Validación al enviar el formulario (Submit)
+    if (formConfig) {
+        formConfig.addEventListener("submit", function(event) {
+            
+            // Validar el país: quitamos espacios y pasamos a minúsculas
+            const valorPais = inputPais.value.trim().toLowerCase();
+            
+            if (valorPais === "" || !paisesValidos.includes(valorPais)) {
+                event.preventDefault(); // Evita que se envíe el formulario
+                mostrarModal("Pais Erroneo"); // Muestra el mensaje tal y como pide la práctica
+                return;
+            }
+
+            // Validar temperaturas antes de enviar
+            if (!validarTemperaturas()) {
+                event.preventDefault();
+                mostrarModal("Revise los valores de temperatura.");
+                return;
+            }
+            
+            // Aquí puedes añadir más validaciones (como la contraseña) si lo necesitas
+        });
+    }
+});
