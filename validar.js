@@ -48,11 +48,6 @@ function validarPais(valor) {
   }
   return false;
 }
-
-// =========================================================
-// APARTADO 2: Conversión de Coordenadas GPS a Google Maps
-// =========================================================
-
 function convertirCoordenadaADecimal(coordStr) {
   if (!coordStr) return null;
   var s = coordStr.trim().toUpperCase();
@@ -137,8 +132,6 @@ function actualizarCamposMapa(mostrarErrorSiFalla) {
     return false;
   }
 }
-
-// Se genera tanto al escribir en el campo GPS como al pulsar el botón "Generar enlace"
 if (gps) {
   gps.addEventListener("input", function() {
     actualizarCamposMapa(false);
@@ -153,10 +146,6 @@ if (btnGenerarMaps) {
     actualizarCamposMapa(true);
   });
 }
-
-// =========================================================
-// Indicador de longitud de contraseña
-// =========================================================
 if (password && indicadorPassword) {
   password.oninput = function() {
     var len = password.value.length;
@@ -173,10 +162,6 @@ if (password && indicadorPassword) {
     }
   };
 }
-
-// =========================================================
-// Envío del formulario
-// =========================================================
 if (formConfig) {
   formConfig.onsubmit = function(e) {
     e.preventDefault();
