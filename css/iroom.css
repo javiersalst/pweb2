@@ -139,18 +139,6 @@ button{
   background:rgba(0,0,0,0.4);
   z-index:999;
 }
-
-#modal>div{
-  background:#ffffff;
-  width:320px;
-  max-width:85%;
-  margin:18% auto;
-  padding:25px 20px;
-  border-radius:4px;
-  text-align:center;
-  box-shadow:0 0 10px rgba(0,0,0,0.3);
-}
-
 #modal-texto p{
   margin:10px 0;
   font-size:15px;
