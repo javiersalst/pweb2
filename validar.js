@@ -1,4 +1,4 @@
-// Lista de países válidos (Apartado 1)
+
 var paises = ["españa", "francia", "italia", "alemania", "reino unido"];
 
 var formConfig = document.getElementById("form-config");
@@ -12,8 +12,6 @@ var indicadorPassword = document.getElementById("indicador-password");
 var modal = document.getElementById("modal");
 var modalTexto = document.getElementById("modal-texto");
 var modalAceptar = document.getElementById("modal-aceptar");
-
-// Función básica para mostrar errores en el modal
 function mostrarModal(mensajes) {
   modalTexto.innerHTML = "";
   for (var i = 0; i < mensajes.length; i++) {
@@ -29,11 +27,6 @@ if (modalAceptar) {
     modal.style.display = "none";
   };
 }
-
-// ---------------------------------------------------------
-// APARTADO 1: Validaciones básicas (País y Contraseña)
-// ---------------------------------------------------------
-
 function validarPais(valor) {
   var p = valor.trim().toLowerCase();
   for (var i = 0; i < paises.length; i++) {
@@ -41,8 +34,6 @@ function validarPais(valor) {
   }
   return false;
 }
-
-// Indicador básico de longitud de contraseña
 if (password && indicadorPassword) {
   password.oninput = function() {
     var len = password.value.length;
@@ -53,11 +44,6 @@ if (password && indicadorPassword) {
     }
   };
 }
-
-// ---------------------------------------------------------
-// APARTADO 2: Conversión GPS básica
-// ---------------------------------------------------------
-
 function convertirAjusteGps(texto) {
   var partes = texto.split(",");
   if (partes.length !== 2) return null;
@@ -79,49 +65,32 @@ if (gps) {
     }
   };
 }
-
-// ---------------------------------------------------------
-// ENVÍO DEL FORMULARIO
-// ---------------------------------------------------------
-
 if (formConfig) {
   formConfig.onsubmit = function(e) {
     e.preventDefault();
     var errores = [];
-
-    // 1. Validar país
     if (!validarPais(pais.value)) {
       errores.push("El país introducido no es válido.");
     }
-
-    // 2. Validar GPS
     var urlGps = convertirAjusteGps(gps.value);
     if (!urlGps) {
       errores.push("Coordenadas GPS incorrectas (Usa formato: 40.513, -3.3486).");
     } else {
       mapaUrl.value = urlGps;
     }
-
-    // 3. Validar Temperatura
     if (tempActual) {
       var t = parseFloat(tempActual.value.trim().replace(",", "."));
       if (isNaN(t) || t < 22 || t > 26) {
         errores.push("La temperatura debe estar entre 22 y 26 ºC.");
       }
     }
-
-    // 4. Validar Contraseña
     if (password.value.length < 9) {
       errores.push("La contraseña debe tener al menos 9 caracteres.");
     }
-
-    // Si hay errores, mostramos el modal y frenamos el envío
     if (errores.length > 0) {
       mostrarModal(errores);
       return;
     }
-
-    // Si todo está bien, se envía
     formConfig.submit();
   };
 }
